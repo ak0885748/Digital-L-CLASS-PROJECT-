@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JINN VOICE Studio - Hyper-realistic AI text-to-speech narration with customizable voice models and soundwave visualizer.">
+  <title>JINN VOICE | AI Neural Text-to-Speech Studio</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Animated Background Orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span class="pulse-ring"></span>
+        </div>
+        <div>
+          <h1 class="brand-title">JINN <span>VOICE</span></h1>
+          <p class="brand-subtitle">AI Neural Voice & Speech Studio</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- API Key Status Pill -->
+        <button id="apiKeyModalBtn" class="api-status-btn" title="Configure ElevenLabs API Key">
+          <span class="status-dot" id="apiStatusDot"></span>
+          <i class="fa-solid fa-key"></i>
+          <span id="apiStatusText">Set API Key</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="main-grid">
+      <!-- Left / Top Column: Input & Controls -->
+      <section class="card studio-card">
+        <!-- Control Bar: Model & Voice Pickers -->
+        <div class="controls-row">
+          <!-- Model Selection Dropdown -->
+          <div class="form-group flex-1">
+            <label for="modelSelect" class="form-label">
+              <i class="fa-solid fa-brain-circuit"></i> AI Model
+            </label>
+            <div class="select-wrapper">
+              <select id="modelSelect" class="custom-select">
+                <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (Natural & High Quality)</option>
+                <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Fast & Low Latency)</option>
+                <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Fastest Speed)</option>
+                <option value="eleven_monolingual_v1">Eleven English v1 (Classic)</option>
+                <option value="eleven_multilingual_v1">Eleven Multilingual v1</option>
+              </select>
+              <i class="fa-solid fa-chevron-down select-chevron"></i>
+            </div>
+          </div>
+
+          <!-- Voice Selection Dropdown -->
+          <div class="form-group flex-1">
+            <div class="label-with-action">
+              <label for="voiceSelect" class="form-label">
+                <i class="fa-solid fa-microphone-lines"></i> Voice Persona
+              </label>
+              <button id="refreshVoicesBtn" class="btn-text" title="Fetch live voices from your ElevenLabs account">
+                <i class="fa-solid fa-arrows-rotate"></i> Sync Voices
+              </button>
+            </div>
+            <div class="select-wrapper">
+              <select id="voiceSelect" class="custom-select">
+                <option value="JBFqnCBsd6RMkjVDRZzb" selected>🧞‍♂️ Jinn Voice (Deep, Mystic & Resonant)</option>
+                <option value="VR6AewLTigWG4xSOukaG">Arnold - Crisp & Authoritative</option>
+                <option value="pNInz6obpgDQGcFmaJgB">Adam - Classic Deep Narrator</option>
+                <option value="TxGEqnHWrfWFTfGW9XjX">Josh - Warm & Narrative</option>
+                <option value="21m00Tcm4TlvDq8ikWAM">Rachel - Calm, Clear & Natural</option>
+                <option value="EXAVITQu4vr4xnSDxMaL">Bella - Expressive & Soft</option>
+                <option value="ErXwobaYiN019PkySvjV">Antoni - Professional Voice</option>
+                <option value="AZnzlk1XvdvUeBnXmlld">Domi - Energetic & Strong</option>
+                <option value="MF3mGyEYCl7XYWbV9V6O">Elli - Gentle & Youthful</option>
+                <option value="yoZ06aMxZJJ28mfd3POQ">Sam - Conversational</option>
+              </select>
+              <i class="fa-solid fa-chevron-down select-chevron"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Format & Quality Selector -->
+        <div class="controls-row">
+          <div class="form-group flex-1">
+            <label for="outputFormatSelect" class="form-label">
+              <i class="fa-solid fa-file-audio"></i> Output Audio Format
+            </label>
+            <div class="select-wrapper">
+              <select id="outputFormatSelect" class="custom-select">
+                <option value="mp3_44100_128" selected>MP3 44.1kHz 128kbps (Default / Balanced)</option>
+                <option value="mp3_44100_192">MP3 44.1kHz 192kbps (High Quality)</option>
+                <option value="mp3_44100_64">MP3 44.1kHz 64kbps (Fast & Compact)</option>
+                <option value="pcm_44100">PCM 44.1kHz (Uncompressed WAV)</option>
+              </select>
+              <i class="fa-solid fa-chevron-down select-chevron"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice Settings Drawer Accordion -->
+        <div class="voice-settings-accordion">
+          <button id="toggleSettingsBtn" class="accordion-header" type="button">
+            <span><i class="fa-solid fa-sliders"></i> Voice Fine-Tuning (Stability & Clarity)</span>
+            <i class="fa-solid fa-angle-down accordion-arrow" id="settingsArrow"></i>
+          </button>
+          
+          <div id="settingsContent" class="accordion-body collapsed">
+            <div class="sliders-grid">
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Stability</span>
+                  <span id="stabilityVal" class="val-badge">0.50</span>
+                </div>
+                <input type="range" id="stabilitySlider" min="0" max="1" step="0.05" value="0.5" class="custom-range">
+                <div class="slider-hints">
+                  <span>More Variable</span>
+                  <span>More Consistent</span>
+                </div>
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Clarity + Similarity Boost</span>
+                  <span id="similarityVal" class="val-badge">0.75</span>
+                </div>
+                <input type="range" id="similaritySlider" min="0" max="1" step="0.05" value="0.75" class="custom-range">
+                <div class="slider-hints">
+                  <span>Low / Expressive</span>
+                  <span>High Similarity</span>
+                </div>
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Style Exaggeration</span>
+                  <span id="styleVal" class="val-badge">0.00</span>
+                </div>
+                <input type="range" id="styleSlider" min="0" max="1" step="0.05" value="0.0" class="custom-range">
+                <div class="slider-hints">
+                  <span>Natural</span>
+                  <span>Exaggerated</span>
+                </div>
+              </div>
+
+              <div class="slider-group flex-center-between">
+                <label for="speakerBoostToggle" class="switch-label">
+                  <span>Speaker Boost</span>
+                  <small>Enhances voice fidelity</small>
+                </label>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="speakerBoostToggle" checked>
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Input Area -->
+        <div class="text-input-section">
+          <div class="text-header">
+            <label for="textInput" class="form-label">
+              <i class="fa-solid fa-align-left"></i> Script to Narrate
+            </label>
+            <div class="preset-pill-group">
+              <span class="preset-label"><i class="fa-solid fa-sparkles"></i> Try Preset:</span>
+              <button type="button" class="preset-chip" data-preset="audiobook">Story</button>
+              <button type="button" class="preset-chip" data-preset="podcast">Podcast</button>
+              <button type="button" class="preset-chip" data-preset="meditation">Meditation</button>
+              <button type="button" class="preset-chip" data-preset="news">Breaking News</button>
+            </div>
+          </div>
+
+          <div class="textarea-container">
+            <textarea 
+              id="textInput" 
+              class="custom-textarea" 
+              rows="6" 
+              placeholder="Paste or type any text you want to convert into hyper-realistic speech narration..."></textarea>
+            
+            <div class="textarea-footer">
+              <div class="stats-counter">
+                <span id="charCount">0</span> characters | <span id="wordCount">0</span> words
+              </div>
+              <button type="button" id="clearTextBtn" class="btn-icon-subtle" title="Clear text">
+                <i class="fa-solid fa-trash-can"></i> Clear
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Row (Play Button) -->
+        <div class="action-bar">
+          <button id="generatePlayBtn" class="btn-primary" type="button">
+            <div class="btn-content">
+              <i class="fa-solid fa-play" id="btnIcon"></i>
+              <span id="btnText">Generate & Play Narration</span>
+            </div>
+            <div class="btn-loader" id="btnLoader">
+              <span class="spinner"></span>
+              <span>Synthesizing Voice...</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Column: Player, Visualizer & History -->
+      <section class="card output-card">
+        <!-- Audio Player & Visualizer -->
+        <div class="player-header">
+          <h2 class="card-title">
+            <i class="fa-solid fa-headphones"></i> Audio Output
+          </h2>
+          <span id="statusBadge" class="badge badge-idle">Ready</span>
+        </div>
+
+        <!-- Canvas Visualizer -->
+        <div class="visualizer-container">
+          <canvas id="waveformCanvas" width="600" height="120"></canvas>
+          <div id="visualizerPlaceholder" class="visualizer-placeholder">
+            <i class="fa-solid fa-wave-pulse"></i>
+            <p>Click "Generate & Play" to synthesize audio</p>
+          </div>
+        </div>
+
+        <!-- Audio Player Controls -->
+        <div class="player-controls">
+          <audio id="audioPlayer" preload="auto"></audio>
+
+          <!-- Timeline Scrubber -->
+          <div class="timeline-row">
+            <span id="currentTime" class="time-display">0:00</span>
+            <input type="range" id="seekSlider" class="custom-range seek-range" min="0" max="100" value="0">
+            <span id="durationTime" class="time-display">0:00</span>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="controls-actions">
+            <!-- Speed Selector -->
+            <div class="speed-controls">
+              <button class="speed-btn" data-speed="0.75">0.75x</button>
+              <button class="speed-btn active" data-speed="1.0">1.0x</button>
+              <button class="speed-btn" data-speed="1.25">1.25x</button>
+              <button class="speed-btn" data-speed="1.5">1.5x</button>
+            </div>
+
+            <!-- Playback & Download -->
+            <div class="main-playback-buttons">
+              <button id="replayBtn" class="btn-icon" title="Replay" disabled>
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+              <button id="togglePlayPauseBtn" class="btn-circle" title="Play/Pause" disabled>
+                <i class="fa-solid fa-play" id="playPauseIcon"></i>
+              </button>
+              <button id="downloadBtn" class="btn-icon" title="Download MP3" disabled>
+                <i class="fa-solid fa-download"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generation History -->
+        <div class="history-section">
+          <div class="history-header">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Narrations</h3>
+            <button id="clearHistoryBtn" class="btn-text-danger" title="Clear history">Clear</button>
+          </div>
+          <div id="historyList" class="history-list">
+            <p class="history-empty">No narrations generated yet.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Powered by <a href="https://elevenlabs.io" target="_blank" rel="noopener">ElevenLabs AI API</a> • Built with HTML, CSS, & Vanilla JS</p>
+    </footer>
+  </div>
+
+  <!-- API Key Modal -->
+  <div id="apiKeyModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-icon"><i class="fa-solid fa-key"></i></div>
+          <div>
+            <h3>ElevenLabs API Configuration</h3>
+            <p>Connect your API key to access all voice models</p>
+          </div>
+        </div>
+        <button id="closeModalBtn" class="btn-close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="api-notice">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Your API Key is stored safely in your browser's local storage and is never sent to any third-party server.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="apiKeyInput" class="form-label">ElevenLabs API Key</label>
+          <div class="input-with-icon">
+            <input type="password" id="apiKeyInput" class="custom-input" placeholder="xi-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            <button type="button" id="toggleApiKeyVisibility" class="btn-peek">
+              <i class="fa-solid fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <small class="helper-text">
+            Don't have an API key? Get one free at 
+            <a href="https://elevenlabs.io" target="_blank" rel="noopener">elevenlabs.io <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </small>
+        </div>
+
+        <!-- Demo Mode Option -->
+        <div class="demo-option-box">
+          <div class="demo-info">
+            <strong>No API Key Right Now?</strong>
+            <p>You can test with Browser Web Speech API fallback or input a temporary key anytime.</p>
+          </div>
+          <button type="button" id="useDemoModeBtn" class="btn-outline">Try Browser Demo Mode</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="removeApiKeyBtn" class="btn-secondary" type="button">Remove Key</button>
+        <button id="saveApiKeyBtn" class="btn-primary-sm" type="button">Save API Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

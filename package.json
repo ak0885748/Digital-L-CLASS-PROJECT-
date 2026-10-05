@@ -1,0 +1,13 @@
+{
+  "name": "elevenlabs-narrator",
+  "version": "1.0.0",
+  "description": "ElevenLabs Text-to-Speech Narrator Studio and SDK Runner",
+  "type": "module",
+  "scripts": {
+    "start": "node narrate.mjs",
+    "serve": "npx serve ."
+  },
+  "dependencies": {
+    "@elevenlabs/elevenlabs-js": "^0.1.0"
+  }
+}
